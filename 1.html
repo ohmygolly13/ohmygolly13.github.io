@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+<script>
+
+var cs = [];
+
+function calculation() {
+
+	output = document.getElementById("output");
+
+	if (document.getElementById("operation_type").value == "sell")
+	{
+
+		amount = Number(document.getElementById("amount").value)
+		rate = Number(document.getElementById("rate").value)
+		gain = Number(document.getElementById("gain").value)
+		output.value = amount * rate * (0.99925**2)/(amount + gain)
+
+	}
+	else {
+
+				amount = Number(document.getElementById("amount").value)
+				rate = Number(document.getElementById("rate").value)
+				gain = Number(document.getElementById("gain").value)
+				output.value = (amount + gain) * rate/(amount * (0.99925**2))
+	}
+
+}
+
+
+function changeInput(elem) {
+
+	if (elem.style.borderColor == "red") { elem.style = cs ; };
+
+	const list = document.querySelectorAll(".inputs");
+	list.forEach(e => {
+		if (e.value == '' && e.style.borderColor != 'red') {
+			cs = e.style;
+			e.style.borderColor = 'red';
+		}
+	});
+
+	var i = 0
+
+	list.forEach(e => {
+		if (e.value != '') {
+			i=i+1
+		}
+	});
+
+	if (i==3) {calculation()}
+}
+
+function changeNewRate(elem){
+	gain = document.getElementById("gain")
+	if (document.getElementById("operation_type").value == "sell"){
+		try {
+		gain.value = amount * (rate * (0.99925**2)/Number(elem.value) - 1)
+		}
+		catch(err)
+		{alert(err)}
+	}
+	else{
+		try {
+			gain.value = amount * (Number(elem.value) * (0.99925**2)/rate - 1)
+		}
+		catch(err)
+		{alert(err)}
+	}
+}
+
+</script>
+
+
+<select id="operation_type" onchange="operation">
+	    <option value="sell">SELL</option>
+	    <option value="buy">BUY</option>
+</select>
+<br>
+<br>
+<br>
+
+Enter AMOUNT: <input class = "inputs" type="text" id="amount" onchange="changeInput(this)"><br>
+<br>
+Enter CURRENT RATE: <input class = "inputs" type="text" id="rate" onchange="changeInput(this)"><br>
+<br>
+Enter DESIRED GAIN: <input class = "inputs" type="text" id="gain" onchange="changeInput(this)"><br>
+<br>
+<br>
+DESIRED RATE:       <input type="text" id="output" onchange="changeNewRate(this)"><br>
+
+
+</body>
+</html>
